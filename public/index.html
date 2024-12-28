@@ -1,0 +1,34 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timestamp Microservice</title>
+</head>
+<body>
+    <h1>Timestamp Microservice</h1>
+    <form id="timestamp-form">
+        <input type="text" id="date-input" placeholder="Enter a date or timestamp" required>
+        <button type="submit">Get Timestamp</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('timestamp-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const dateInput = document.getElementById('date-input').value;
+            fetch(`/api/timestamp/${dateInput}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('result');
+                    if (data.error) {
+                        resultDiv.innerHTML = `<p>${data.error}</p>`;
+                    } else {
+                        resultDiv.innerHTML = `<p>Unix: ${data.unix}</p><p>UTC: ${data.utc}</p>`;
+                    }
+                });
+        });
+    </script>
+</body>
+</html>
